@@ -58,6 +58,7 @@ struct progress * mallocProgress(int width) {
 
 void doneProgress(struct progress *p) {
     free(p->formatted);
+    /* caller's responsibility to free(p) */
 }
 
 void displayProgress(struct progress *p, FILE * stream) {
@@ -125,7 +126,7 @@ void updatePercentage(struct progress *p, const char *message, const int percent
     char * pstart = p->formatted + p->_size - 2;
 
     if (mi > 0) {
-        if (debug > 1) fprintf(stderr, "split in message: %ld\n", buf - p->formatted);
+        if (debug > 1) fprintf(stderr, "split in message: %ld\n", (long)(buf - p->formatted));
 
         memcpy(buf, message, rc);
         buf += rc;
@@ -141,7 +142,7 @@ void updatePercentage(struct progress *p, const char *message, const int percent
 
         appendPercentage(p, percentage, -1, pstart);
     } else if (rc == lmessage) {
-        if (debug > 1) fprintf(stderr, "split after message; before spaces: %ld\n", buf - p->formatted);
+        if (debug > 1) fprintf(stderr, "split after message; before spaces: %ld\n", (long)(buf - p->formatted));
 
         memcpy(buf, message, lmessage);
         buf += lmessage;
@@ -154,7 +155,7 @@ void updatePercentage(struct progress *p, const char *message, const int percent
 
         appendPercentage(p, percentage, -1, pstart);
     } else if (rc < mcap) {
-        if (debug > 1) fprintf(stderr, "split in spaces: %ld\n", buf - p->formatted);
+        if (debug > 1) fprintf(stderr, "split in spaces: %ld\n", (long)(buf - p->formatted));
 
         memcpy(buf, message, lmessage);
         buf += lmessage;
@@ -170,7 +171,7 @@ void updatePercentage(struct progress *p, const char *message, const int percent
 
         appendPercentage(p, percentage, -1, pstart);
     } else if (rc == mcap) {
-        if (debug > 1) fprintf(stderr, "split after spaces; before percentage: %ld\n", buf - p->formatted);
+        if (debug > 1) fprintf(stderr, "split after spaces; before percentage: %ld\n", (long)(buf - p->formatted));
 
         memcpy(buf, message, lmessage);
         buf += lmessage;
