@@ -1,5 +1,5 @@
 ansi: ansi.c
-	cc -o $@ $<
+	$(CC) -o $@ $<
 
 nc: nc.c
-	cc -o $@ $< -lncurses
+	$(CC) -o $@ $< -lncurses
